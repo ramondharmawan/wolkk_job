@@ -48,9 +48,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Image.network(
-            'https://wolkk.com/hs-fs/hubfs/logo%20small.jpg?width=240&height=152&name=logo%20small.jpg',
-            height: 180,
+          InkWell(
+            onTap: () => GoRouter.of(context).go('/'),
+            child: Image.network(
+              'https://wolkk.com/hs-fs/hubfs/logo%20small.jpg?width=240&height=152&name=logo%20small.jpg',
+              height: 180,
+            ),
           ),
           Row(
             children: [
@@ -69,7 +72,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  Widget _buildMenuItem(BuildContext context, String title, {bool isDropdown = false}) {
+  Widget _buildMenuItem(BuildContext context, String title,
+      {bool isDropdown = false}) {
     return InkWell(
       onTap: () {
         GoRouter.of(context).go('/careers');
@@ -81,7 +85,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             style: const TextStyle(color: Colors.black, fontSize: 16),
           ),
           if (isDropdown)
-            const Icon(Icons.keyboard_arrow_down, color: Colors.black, size: 18),
+            const Icon(Icons.keyboard_arrow_down,
+                color: Colors.black, size: 18),
           const SizedBox(width: 20),
         ],
       ),
