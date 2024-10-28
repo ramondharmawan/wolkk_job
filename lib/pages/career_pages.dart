@@ -5,19 +5,8 @@ import 'package:shimmer/shimmer.dart';
 import 'package:wolkk_job/api/job_api.dart';
 import 'package:wolkk_job/pages/custom_appbar.dart';
 
-class CareerPages extends StatefulWidget {
+class CareerPages extends StatelessWidget {
   const CareerPages({super.key});
-
-  @override
-  State<CareerPages> createState() => _CareerPagesState();
-}
-
-class _CareerPagesState extends State<CareerPages> {
-  @override
-  void initState() {
-    getJobs(5, 10);
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,104 +14,101 @@ class _CareerPagesState extends State<CareerPages> {
       backgroundColor: Colors.white,
       appBar: const CustomAppBar(),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 120),
-          child: Column(
-            children: [
-              const SizedBox(height: 80),
-              const Center(
-                child: Text(
-                  'Wolkk Job!',
-                  style: TextStyle(fontSize: 100),
-                ),
-              ),
-              const SizedBox(height: 80),
-              const SizedBox(
-                height: 100,
-                child: TextField(
-                  style: TextStyle(fontSize: 30),
-                  decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 40, horizontal: 20),
-                    hintStyle: TextStyle(fontSize: 30),
-                    hintText: 'Search',
-                    suffixIcon: Padding(
-                      padding: EdgeInsets.only(right: 20),
-                      child: Icon(Icons.search, color: Colors.black, size: 40),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      borderSide: BorderSide(color: Colors.grey, width: 3),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      borderSide: BorderSide(color: Colors.grey, width: 3),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      borderSide: BorderSide(color: Colors.black, width: 3),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 80),
-              Row(
-                children: [
-                  _buildDropdownButtonWithBorder(context, 'Team', ['Team A']),
-                  const SizedBox(width: 10),
-                  _buildDropdownButtonWithBorder(context, 'Sub-speciality',
-                      ['Sub-speciality', 'Sub-speciality 2']),
-                  const SizedBox(width: 10),
-                  _buildDropdownButtonWithBorder(
-                      context, 'Work Type', ['Full Time', 'Part Time']),
-                ],
-              ),
-              const SizedBox(height: 20),
-              const Divider(color: Color(0xFFD3d3d3), thickness: 3),
-              const SizedBox(height: 20),
-              FutureBuilder(
-                  future: getJobs(5, 10),
-                  builder: (context, response) {
-                    if (!response.hasData) {
-                      if (response.hasError) {
-                        return Center(
-                          child: Text(
-                            'Error: ${response.error}',
-                            style: const TextStyle(fontSize: 20),
-                          ),
-                        );
-                      }
+        padding: const EdgeInsets.symmetric(horizontal: 120),
+        child: Column(
+          children: [
+            const SizedBox(height: 80),
+            const Center(
+              child: Text('Wolkk Job!', style: TextStyle(fontSize: 100)),
+            ),
+            const SizedBox(height: 80),
+            _buildSearchBar(),
+            const SizedBox(height: 80),
+            _buildFilterRow(),
+            const SizedBox(height: 20),
+            const Divider(color: Color(0xFFD3d3d3), thickness: 3),
+            const SizedBox(height: 20),
+            _buildJobList(),
+            const SizedBox(height: 100),
+          ],
+        ),
+      ),
+    );
+  }
 
-                      return _buildShimmer();
-                    }
-
-                    return Column(
-                      children: [
-                         Text('${response.data!.pagination.perPage} Live Result',
-                            style: const TextStyle(fontSize: 22)),
-                        const SizedBox(height: 40),
-                        ListView.builder(
-                          itemCount: response.data!.data.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            final item = response.data!.data[index];
-                            return _jobsItem(
-                              title: item.title,
-                              subtitle: item.tags.join(', '),
-                              location: item.location,
-                              onTap: () =>
-                                  GoRouter.of(context).go('/career_details'),
-                            );
-                          },
-                        ),
-                      ],
-                    );
-                  }),
-              const SizedBox(height: 100),
-            ],
+  Widget _buildSearchBar() {
+    return const SizedBox(
+      height: 100,
+      child: TextField(
+        style: TextStyle(fontSize: 30),
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+          hintStyle: TextStyle(fontSize: 30),
+          hintText: 'Search',
+          suffixIcon: Padding(
+            padding: EdgeInsets.only(right: 20),
+            child: Icon(Icons.search, color: Colors.black, size: 40),
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            borderSide: BorderSide(color: Colors.grey, width: 3),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            borderSide: BorderSide(color: Colors.grey, width: 3),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            borderSide: BorderSide(color: Colors.black, width: 3),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildFilterRow() {
+    return Row(
+      children: [
+        _buildDropdownButton('Team', ['Team A']),
+        const SizedBox(width: 10),
+        _buildDropdownButton('Sub-speciality', ['Sub-speciality', 'Sub-speciality 2']),
+        const SizedBox(width: 10),
+        _buildDropdownButton('Work Type', ['Full Time', 'Part Time']),
+      ],
+    );
+  }
+
+  Widget _buildJobList() {
+    return FutureBuilder(
+      future: getJobs(5, 10),
+      builder: (context, response) {
+        if (response.connectionState != ConnectionState.done) {
+          return response.hasError ? _buildError(response.error.toString()) : _buildShimmer();
+        }
+
+        return Column(
+          children: [
+            Text(
+              '${response.data!.pagination.perPage} Live Result',
+              style: const TextStyle(fontSize: 22),
+            ),
+            const SizedBox(height: 40),
+            ListView.builder(
+              itemCount: response.data!.data.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                final item = response.data!.data[index];
+                return _jobItem(
+                  title: item.title,
+                  subtitle: item.tags.join(', '),
+                  location: item.location,
+                  onTap: () => GoRouter.of(context).go('/career_details'),
+                );
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -145,8 +131,7 @@ class _CareerPagesState extends State<CareerPages> {
     );
   }
 
-  Widget _buildDropdownButtonWithBorder(
-      BuildContext context, String hint, List<String> items) {
+  Widget _buildDropdownButton(String hint, List<String> items) {
     return Container(
       width: 250,
       height: 50,
@@ -157,16 +142,11 @@ class _CareerPagesState extends State<CareerPages> {
       child: DropdownButtonHideUnderline(
         child: DropdownButton2(
           isExpanded: true,
-          hint: Text(
-            hint,
-            style: const TextStyle(fontSize: 16),
-          ),
-          items: items
-              .map((item) => DropdownMenuItem<String>(
-                    value: item,
-                    child: Text(item),
-                  ))
-              .toList(),
+          hint: Text(hint, style: const TextStyle(fontSize: 16)),
+          items: items.map((item) => DropdownMenuItem<String>(
+            value: item,
+            child: Text(item),
+          )).toList(),
           onChanged: (value) {
             // Handle selection change if necessary
           },
@@ -175,7 +155,7 @@ class _CareerPagesState extends State<CareerPages> {
     );
   }
 
-  Widget _jobsItem({
+  Widget _jobItem({
     required String title,
     required String subtitle,
     required String location,
@@ -202,24 +182,12 @@ class _CareerPagesState extends State<CareerPages> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    title,
-                    style: const TextStyle(
-                        fontSize: 30, fontWeight: FontWeight.bold),
-                  ),
+                  Text(title, style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        subtitle,
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        location,
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
+                      Text(subtitle, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      Text(location, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                     ],
                   ),
                 ],
@@ -227,8 +195,17 @@ class _CareerPagesState extends State<CareerPages> {
             ),
           ),
         ),
-        const SizedBox(height: 20)
+        const SizedBox(height: 20),
       ],
+    );
+  }
+
+  Widget _buildError(String error) {
+    return Center(
+      child: Text(
+        'Error: $error',
+        style: const TextStyle(fontSize: 20),
+      ),
     );
   }
 }
