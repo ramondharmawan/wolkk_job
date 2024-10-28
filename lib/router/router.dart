@@ -1,6 +1,9 @@
+// import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wolkk_job/pages/career_pages.dart';
+import 'package:wolkk_job/pages/careers_details_page.dart';
+import 'package:wolkk_job/pages/form_page.dart';
 import 'package:wolkk_job/pages/landing_page.dart';
 
 final GoRouter routers = GoRouter(
@@ -28,6 +31,11 @@ final GoRouter routers = GoRouter(
           );
         },
       ),
+      builder: (context, state) => const CareerDetailsPage(title: 'Career'),
+    ),
+    GoRoute(
+      path: '/apply',
+      builder: (context, state) => const FormPage(),
     ),
   ],
 );
