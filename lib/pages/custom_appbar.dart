@@ -52,7 +52,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             onTap: () => GoRouter.of(context).go('/'),
             child: Image.network(
               'https://wolkk.com/hs-fs/hubfs/logo%20small.jpg?width=240&height=152&name=logo%20small.jpg',
-              height: 180,
+              fit: BoxFit.cover,
             ),
           ),
           Row(
