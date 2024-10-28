@@ -71,7 +71,8 @@ class CareerPages extends StatelessWidget {
       children: [
         _buildDropdownButton('Team', ['Team A']),
         const SizedBox(width: 10),
-        _buildDropdownButton('Sub-speciality', ['Sub-speciality', 'Sub-speciality 2']),
+        _buildDropdownButton(
+            'Sub-speciality', ['Sub-speciality', 'Sub-speciality 2']),
         const SizedBox(width: 10),
         _buildDropdownButton('Work Type', ['Full Time', 'Part Time']),
       ],
@@ -83,7 +84,9 @@ class CareerPages extends StatelessWidget {
       future: getJobs(5, 10),
       builder: (context, response) {
         if (response.connectionState != ConnectionState.done) {
-          return response.hasError ? _buildError(response.error.toString()) : _buildShimmer();
+          return response.hasError
+              ? _buildError(response.error.toString())
+              : _buildShimmer();
         }
 
         return Column(
@@ -143,10 +146,12 @@ class CareerPages extends StatelessWidget {
         child: DropdownButton2(
           isExpanded: true,
           hint: Text(hint, style: const TextStyle(fontSize: 16)),
-          items: items.map((item) => DropdownMenuItem<String>(
-            value: item,
-            child: Text(item),
-          )).toList(),
+          items: items
+              .map((item) => DropdownMenuItem<String>(
+                    value: item,
+                    child: Text(item),
+                  ))
+              .toList(),
           onChanged: (value) {
             // Handle selection change if necessary
           },
@@ -182,12 +187,18 @@ class CareerPages extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(title, style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+                  Text(title,
+                      style: const TextStyle(
+                          fontSize: 30, fontWeight: FontWeight.bold)),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(subtitle, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                      Text(location, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      Text(subtitle,
+                          style: const TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold)),
+                      Text(location,
+                          style: const TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold)),
                     ],
                   ),
                 ],

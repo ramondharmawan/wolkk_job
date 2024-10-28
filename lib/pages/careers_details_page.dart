@@ -124,7 +124,7 @@ class _CareerDetailsPageState extends State<CareerDetailsPage> {
                       style:
                           TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
                     ),
-                    _buildContactButton(
+                    _applyButton(
                       const Color(0xFF425B76),
                       'Apply Now',
                       () {
@@ -148,21 +148,21 @@ class _CareerDetailsPageState extends State<CareerDetailsPage> {
     );
   }
 
-  Widget _buildContactButton(final Color? bgColor, final String? title,
+  Widget _applyButton(final Color? bgColor, final String? title,
       final VoidCallback? onPressed) {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: bgColor ?? const Color(0xFF425B76),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       ),
       child: SizedBox(
-        height: 50,
-        width: 120,
+        height: 40,
+        width: 160,
         child: Center(
           child: Text(
-            title ?? 'Contact Us',
+            title ?? 'Apply',
             style: const TextStyle(color: Colors.white, fontSize: 18),
           ),
         ),
