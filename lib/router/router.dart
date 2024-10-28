@@ -7,11 +7,27 @@ final GoRouter routers = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const LandingPage(title: 'Wolkk Job!'),
+      pageBuilder: (context, state) => CustomTransitionPage(
+        child: const LandingPage(title: 'Wolkk Job!'),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(
+            opacity: animation,
+            child: child,
+          );
+        },
+      ),
     ),
     GoRoute(
       path: '/careers',
-      builder: (context, state) => const CareerPages(),
+      pageBuilder: (context, state) => CustomTransitionPage(
+        child: const CareerPages(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(
+            opacity: animation,
+            child: child,
+          );
+        },
+      ),
     ),
   ],
 );
