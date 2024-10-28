@@ -59,7 +59,8 @@ class CareerPages extends StatelessWidget {
                   _buildDropdownButtonWithBorder(context, 'Sub-speciality',
                       ['Sub-speciality', 'Sub-speciality 2']),
                   const SizedBox(width: 10),
-                  _buildDropdownButtonWithBorder(context, 'Work Type', ['Full Time', 'Part Time']),
+                  _buildDropdownButtonWithBorder(
+                      context, 'Work Type', ['Full Time', 'Part Time']),
                 ],
               ),
               const SizedBox(height: 20),
@@ -70,43 +71,10 @@ class CareerPages extends StatelessWidget {
               ListView.builder(
                 itemCount: 4,
                 shrinkWrap: true,
-                itemBuilder: (context, index) => Container(
-                  height: 170,
-                  margin: const EdgeInsets.only(bottom: 20),
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: Colors.black, width: 2),
-                  ),
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                  child: const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Tech Support Engineer - San Bantul (Remote)',
-                        style:
-                            TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'IT',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            'San Bantul, BA, DIY (Remote)',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                itemBuilder: (context, index) => _jobsItem(
+                  title: 'Tech Support Engineer - San Bantul (Remote)',
+                  subtitle: 'IT',
+                  location: 'San Bantul, BA, DIY (Remote)',
                 ),
               ),
               const SizedBox(height: 100),
@@ -144,6 +112,61 @@ class CareerPages extends StatelessWidget {
           },
         ),
       ),
+    );
+  }
+
+  Widget _jobsItem(
+      {required String title,
+      required String subtitle,
+      required String location}) {
+    return Column(
+      children: [
+        Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () {},
+            splashColor: Colors.grey.withOpacity(0.4),
+            hoverColor: Colors.grey.withOpacity(0.4),
+            borderRadius: BorderRadius.circular(20),
+            child: Container(
+              height: 170,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: Colors.black, width: 2),
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                        fontSize: 30, fontWeight: FontWeight.bold),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        subtitle,
+                        style: const TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        location,
+                        style: const TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 20)
+      ],
     );
   }
 }
