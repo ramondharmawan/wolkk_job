@@ -1,10 +1,23 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:wolkk_job/api/job_api.dart';
 import 'package:wolkk_job/pages/custom_appbar.dart';
 
-class CareerPages extends StatelessWidget {
+class CareerPages extends StatefulWidget {
   const CareerPages({super.key});
+
+  @override
+  State<CareerPages> createState() => _CareerPagesState();
+}
+
+class _CareerPagesState extends State<CareerPages> {
+  @override
+  void initState() {
+    getJobs(5, 10);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,20 +80,65 @@ class CareerPages extends StatelessWidget {
               const SizedBox(height: 20),
               const Divider(color: Color(0xFFD3d3d3), thickness: 3),
               const SizedBox(height: 20),
-              const Text('4 Live Result', style: TextStyle(fontSize: 22)),
-              const SizedBox(height: 40),
-              ListView.builder(
-                itemCount: 4,
-                shrinkWrap: true,
-                itemBuilder: (context, index) => _jobsItem(
-                  title: 'Tech Support Engineer - San Bantul (Remote)',
-                  subtitle: 'IT',
-                  location: 'San Bantul, BA, DIY (Remote)',
-                  onTap: () => GoRouter.of(context).go('/career_details'),
-                ),
-              ),
+              FutureBuilder(
+                  future: getJobs(5, 10),
+                  builder: (context, response) {
+                    if (!response.hasData) {
+                      if (response.hasError) {
+                        return Center(
+                          child: Text(
+                            'Error: ${response.error}',
+                            style: const TextStyle(fontSize: 20),
+                          ),
+                        );
+                      }
+
+                      return _buildShimmer();
+                    }
+
+                    return Column(
+                      children: [
+                         Text('${response.data!.pagination.perPage} Live Result',
+                            style: const TextStyle(fontSize: 22)),
+                        const SizedBox(height: 40),
+                        ListView.builder(
+                          itemCount: response.data!.data.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            final item = response.data!.data[index];
+                            return _jobsItem(
+                              title: item.title,
+                              subtitle: item.tags.join(', '),
+                              location: item.location,
+                              onTap: () =>
+                                  GoRouter.of(context).go('/career_details'),
+                            );
+                          },
+                        ),
+                      ],
+                    );
+                  }),
               const SizedBox(height: 100),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildShimmer() {
+    return ListView.builder(
+      itemCount: 5,
+      shrinkWrap: true,
+      itemBuilder: (context, index) => Shimmer.fromColors(
+        baseColor: Colors.grey[300]!,
+        highlightColor: Colors.grey[100]!,
+        child: Container(
+          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+          height: 170,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8),
           ),
         ),
       ),

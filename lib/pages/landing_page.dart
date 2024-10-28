@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:wolkk_job/pages/custom_appbar.dart';
 
 class LandingPage extends StatefulWidget {
