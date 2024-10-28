@@ -31,10 +31,32 @@ final GoRouter routers = GoRouter(
           );
         },
       ),
+      builder: (context, state) => const CareerPages(),
+    ),
+    GoRoute(
+      path: '/career_details',
+      pageBuilder: (context, state) => CustomTransitionPage(
+        child: const CareerDetailsPage(title: 'Career',),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(
+            opacity: animation,
+            child: child,
+          );
+        },
+      ),
       builder: (context, state) => const CareerDetailsPage(title: 'Career'),
     ),
     GoRoute(
       path: '/apply',
+      pageBuilder: (context, state) => CustomTransitionPage(
+        child: const FormPage(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(
+            opacity: animation,
+            child: child,
+          );
+        },
+      ),
       builder: (context, state) => const FormPage(),
     ),
   ],

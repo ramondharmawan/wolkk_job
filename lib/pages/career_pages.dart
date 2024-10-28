@@ -1,5 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:wolkk_job/pages/custom_appbar.dart';
 
 class CareerPages extends StatelessWidget {
@@ -75,6 +76,7 @@ class CareerPages extends StatelessWidget {
                   title: 'Tech Support Engineer - San Bantul (Remote)',
                   subtitle: 'IT',
                   location: 'San Bantul, BA, DIY (Remote)',
+                  onTap: () => GoRouter.of(context).go('/career_details'),
                 ),
               ),
               const SizedBox(height: 100),
@@ -115,16 +117,18 @@ class CareerPages extends StatelessWidget {
     );
   }
 
-  Widget _jobsItem(
-      {required String title,
-      required String subtitle,
-      required String location}) {
+  Widget _jobsItem({
+    required String title,
+    required String subtitle,
+    required String location,
+    void Function()? onTap,
+  }) {
     return Column(
       children: [
         Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () {},
+            onTap: onTap,
             splashColor: Colors.grey.withOpacity(0.4),
             hoverColor: Colors.grey.withOpacity(0.4),
             borderRadius: BorderRadius.circular(20),

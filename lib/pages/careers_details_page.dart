@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:wolkk_job/pages/custom_appbar.dart';
 
 class CareerDetailsPage extends StatefulWidget {
   const CareerDetailsPage({super.key, required this.title});
+
   final String title;
 
   @override
@@ -46,7 +48,8 @@ class _CareerDetailsPageState extends State<CareerDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _buildHeader(),
+      backgroundColor: Colors.white,
+      appBar: const CustomAppBar(),
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -142,94 +145,6 @@ class _CareerDetailsPageState extends State<CareerDetailsPage> {
     return const Text(
       'Senior Machine Learning Engineer - Content Review',
       style: TextStyle(fontSize: 50, fontWeight: FontWeight.w400),
-    );
-  }
-
-  AppBar _buildHeader() {
-    return AppBar(
-      toolbarHeight: 160,
-      elevation: 0,
-      backgroundColor: Colors.white,
-      title: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 200),
-        child: Column(
-          children: [
-            _buildLanguageSelector(),
-            const SizedBox(height: 40),
-            _buildNavigationRow(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLanguageSelector() {
-    return const SizedBox(
-      height: 20,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Icon(Icons.language, color: Colors.black, size: 18),
-          SizedBox(width: 5),
-          Text(
-            'English',
-            style: TextStyle(color: Colors.black, fontSize: 16),
-          ),
-          SizedBox(width: 5),
-          Icon(Icons.keyboard_arrow_down, color: Colors.black, size: 18),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildNavigationRow() {
-    return SizedBox(
-      height: 60,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Image.network(
-            'https://wolkk.com/hs-fs/hubfs/logo%20small.jpg?width=240&height=152&name=logo%20small.jpg',
-            height: 180,
-          ),
-          Row(
-            children: [
-              _buildMenuItem('Home'),
-              _buildMenuItem('Blog'),
-              _buildMenuItem('Services', isDropdown: true),
-              _buildMenuItem('Customers'),
-              _buildMenuItem('About', isDropdown: true),
-              _buildMenuItem('Download eBook'),
-              _buildMenuItem('Careers'),
-              _buildContactButton(
-                const Color(0xFF425B76),
-                'Contact Us',
-                () {},
-              ),
-            ],
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _buildMenuItem(String title, {bool isDropdown = false}) {
-    return InkWell(
-      onTap: () {
-        GoRouter.of(context).go('/careers');
-      },
-      child: Row(
-        children: [
-          Text(
-            title,
-            style: const TextStyle(color: Colors.black, fontSize: 16),
-          ),
-          if (isDropdown)
-            const Icon(Icons.keyboard_arrow_down,
-                color: Colors.black, size: 18),
-          const SizedBox(width: 20),
-        ],
-      ),
     );
   }
 
